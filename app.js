@@ -24,7 +24,13 @@ app.locals.formatPercent = (value) => {
   }
 
   return `${Number(value).toFixed(1)}%`;
-};
+  };
+
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'ok'
+  });
+});
 
 app.use('/', pagesRouter);
 

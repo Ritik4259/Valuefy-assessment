@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Portfolio rebalancing web app for Amit Sharma",
   "main": "app.js",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "start": "node app.js"
   },

@@ -11,6 +11,55 @@ npm start
 
 Open `http://localhost:3000`.
 
+## Free Deployment
+
+This project can be deployed for free as a demo app on platforms like Koyeb or Render.
+
+Important limitation:
+
+- The app uses a local SQLite file: `model_portfolio.db`
+- On free hosting, local disk is usually ephemeral
+- That means saved rebalance history or edited model allocations may be lost after restart, redeploy, or inactivity
+
+If this is for an interview/demo, that is usually acceptable. If you need permanent saved data, move to a paid persistent disk or switch to a hosted database.
+
+### Option 1: Render Free Web Service
+
+1. Push this project to GitHub
+2. Sign in to Render
+3. Create a new `Web Service`
+4. Connect the GitHub repository
+5. Set:
+   - Build Command: `npm install`
+   - Start Command: `npm start`
+6. Deploy
+
+Render will detect the Express app automatically. The app already reads `PORT` from the environment.
+
+### Option 2: Koyeb Free Web Service
+
+1. Push this project to GitHub
+2. Sign in to Koyeb
+3. Create a new web service from the GitHub repo
+4. Use either:
+   - Native Node.js build with start command `npm start`
+   - Or Docker deployment using the included `Dockerfile`
+5. Deploy
+
+### Health Check
+
+For platforms that support health checks, use:
+
+```text
+/health
+```
+
+### Production Notes
+
+- Keep `model_portfolio.db` committed if you want the seed data available on deploy
+- Avoid multiple app instances with SQLite
+- Free hosting is best for demo use, not long-term persistence
+
 ## Architecture
 
 - `app.js`: Express bootstrap, shared template helpers, static assets, and route mounting
