@@ -1,0 +1,50 @@
+<%- include('partials/header') %>
+
+<section class="page-hero">
+  <div>
+    <p class="eyebrow">Saved Sessions</p>
+    <h2>Rebalance History</h2>
+    <p class="subtle">Newest sessions appear first for Amit Sharma.</p>
+  </div>
+</section>
+
+<% if (successMessage) { %>
+  <div class="message success"><%= successMessage %></div>
+<% } %>
+
+<section class="card">
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Created At</th>
+          <th>Portfolio Value</th>
+          <th>Total Buy</th>
+          <th>Total Sell</th>
+          <th>Net Cash Needed</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (historyData.sessions.length === 0) { %>
+          <tr>
+            <td colspan="6" class="empty-state">No rebalance sessions have been saved yet.</td>
+          </tr>
+        <% } %>
+
+        <% historyData.sessions.forEach((session) => { %>
+          <tr>
+            <td><%= new Date(session.created_at).toLocaleString('en-IN') %></td>
+            <td><%= formatCurrency(session.portfolio_value) %></td>
+            <td><%= formatCurrency(session.total_to_buy) %></td>
+            <td><%= formatCurrency(session.total_to_sell) %></td>
+            <td><%= formatCurrency(session.net_cash_needed) %></td>
+            <td><span class="pill neutral"><%= session.status %></span></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

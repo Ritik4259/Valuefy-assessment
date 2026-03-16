@@ -1,0 +1,49 @@
+<%- include('partials/header') %>
+
+<section class="page-hero">
+  <div>
+    <p class="eyebrow">Model Portfolio</p>
+    <h2>Edit Allocation Plan</h2>
+    <p class="subtle">Update the five model fund percentages. The total must equal exactly 100.</p>
+  </div>
+</section>
+
+<% if (errorMessage) { %>
+  <div class="message error"><%= errorMessage %></div>
+<% } %>
+
+<% if (successMessage) { %>
+  <div class="message success"><%= successMessage %></div>
+<% } %>
+
+<section class="card">
+  <form action="/plan/edit" method="post" class="plan-form">
+    <% modelFunds.forEach((fund) => { %>
+      <div class="form-row">
+        <div>
+          <label for="allocation_<%= fund.fundId %>"><%= fund.fundName %></label>
+          <p class="subtle"><%= fund.assetClass %></p>
+        </div>
+        <div class="allocation-input">
+          <input
+            id="allocation_<%= fund.fundId %>"
+            name="allocation_<%= fund.fundId %>"
+            type="number"
+            min="0"
+            step="0.01"
+            value="<%= fund.allocationPct %>"
+            required
+          />
+          <span>%</span>
+        </div>
+      </div>
+    <% }) %>
+
+    <div class="form-actions">
+      <button class="button-primary" type="submit">Save Plan</button>
+      <a class="button-secondary" href="/comparison">Back to Comparison</a>
+    </div>
+  </form>
+</section>
+
+<%- include('partials/footer') %>

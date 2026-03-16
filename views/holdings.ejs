@@ -1,0 +1,36 @@
+<%- include('partials/header') %>
+
+<section class="page-hero">
+  <div>
+    <p class="eyebrow">Current Holdings</p>
+    <h2><%= holdingsData.client.client_name %></h2>
+    <p class="subtle">
+      Total portfolio value: <strong><%= formatCurrency(holdingsData.totalPortfolioValue) %></strong>
+    </p>
+  </div>
+</section>
+
+<section class="card">
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Fund ID</th>
+          <th>Fund Name</th>
+          <th>Current Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% holdingsData.holdings.forEach((holding) => { %>
+          <tr>
+            <td><%= holding.fund_id %></td>
+            <td><%= holding.fund_name %></td>
+            <td><%= formatCurrency(holding.current_value) %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

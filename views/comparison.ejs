@@ -1,0 +1,79 @@
+<%- include('partials/header') %>
+
+<section class="page-hero">
+  <div>
+    <p class="eyebrow">Comparison Dashboard</p>
+    <h2><%= comparison.client.client_name %></h2>
+    <p class="subtle">
+      Current portfolio value is <strong><%= formatCurrency(comparison.totalPortfolioValue) %></strong>.
+    </p>
+  </div>
+  <form action="/comparison/save" method="post">
+    <button class="button-primary" type="submit">Save Rebalancing</button>
+  </form>
+</section>
+
+<% if (successMessage) { %>
+  <div class="message success"><%= successMessage %></div>
+<% } %>
+
+<section class="card summary-grid">
+  <div>
+    <span class="summary-label">Total Buy</span>
+    <strong><%= formatCurrency(comparison.summary.totalToBuy) %></strong>
+  </div>
+  <div>
+    <span class="summary-label">Total Sell</span>
+    <strong><%= formatCurrency(comparison.summary.totalToSell) %></strong>
+  </div>
+  <div>
+    <span class="summary-label">Fresh Money Needed</span>
+    <strong><%= formatCurrency(comparison.summary.netCashNeeded) %></strong>
+  </div>
+</section>
+
+<section class="card">
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Fund Name</th>
+          <th>Plan %</th>
+          <th>Today %</th>
+          <th>Drift</th>
+          <th>Action</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% comparison.comparisonItems.forEach((item) => { %>
+          <tr>
+            <td>
+              <div class="fund-name"><%= item.fundName %></div>
+              <% if (!item.isModelFund) { %>
+                <span class="pill neutral">Not in model</span>
+              <% } %>
+            </td>
+            <td><%= formatPercent(item.targetPct) %></td>
+            <td><%= formatPercent(item.currentPct) %></td>
+            <td>
+              <% if (item.driftPct === null || item.driftPct === undefined) { %>
+                -
+              <% } else { %>
+                <%= formatPercent(item.driftPct) %>
+              <% } %>
+            </td>
+            <td>
+              <span class="pill <%= item.action === 'BUY' ? 'buy' : item.action === 'SELL' ? 'sell' : item.action === 'REVIEW' ? 'review' : 'neutral' %>">
+                <%= item.action %>
+              </span>
+            </td>
+            <td><%= formatCurrency(item.amount) %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

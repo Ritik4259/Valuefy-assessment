@@ -1,0 +1,14 @@
+{
+  "name": "valuefy2-portfolio-rebalancer",
+  "version": "1.0.0",
+  "description": "Portfolio rebalancing web app for Amit Sharma",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "sqlite3": "^5.1.7"
+  }
+}
