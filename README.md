@@ -1,5 +1,7 @@
 # 📊 Portfolio Rebalancing Web App (Valuefy Assessment)
 
+Deployed on render: https://valuefy-assessment.onrender.com
+
 ## 🚀 Overview
 
 This project is a **portfolio rebalancing web application** built as part of the Valuefy assessment.
