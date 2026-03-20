@@ -1,7 +1,3 @@
-Ritik, here’s a **clean, professional README** you can directly paste into your GitHub repo 👇
-
----
-
 # 📊 Portfolio Rebalancing Web App (Valuefy Assessment)
 
 ## 🚀 Overview
