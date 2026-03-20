@@ -1,111 +1,299 @@
-# Portfolio Rebalancer
+Ritik, here’s a **clean, professional README** you can directly paste into your GitHub repo 👇
 
-Simple Express + EJS + sqlite3 web app for Amit Sharma's portfolio rebalancing challenge.
+---
 
-## Run
+# 📊 Portfolio Rebalancing Web App (Valuefy Assessment)
+
+## 🚀 Overview
+
+This project is a **portfolio rebalancing web application** built as part of the Valuefy assessment.
+
+The application helps a client (**Amit Sharma**) compare his **current mutual fund holdings** with an advisor’s **recommended model portfolio** and generates actionable insights on:
+
+* What to **BUY**
+* What to **SELL**
+* What requires **REVIEW**
+
+It also allows:
+
+* Saving rebalancing recommendations
+* Viewing historical recommendations
+* Editing the target allocation plan dynamically
+
+---
+
+## 🧠 Problem Statement
+
+Over time, market fluctuations cause a portfolio to **drift away** from its target allocation.
+
+This app solves that by:
+
+1. Comparing **current vs target allocation**
+2. Calculating **drift**
+3. Suggesting **BUY / SELL actions with exact amounts**
+4. Allowing users to **rebalance and track decisions**
+
+---
+
+## ⚙️ Tech Stack
+
+* **Backend:** Node.js, Express
+* **Database:** SQLite (provided)
+* **Templating Engine:** EJS
+* **Frontend:** HTML, CSS
+* **Deployment:** Render
+
+---
+
+## 🗂️ Project Structure
+
+```bash
+project/
+│── app.js
+│── package.json
+│── model_portfolio.db
+│
+├── db/
+│   ├── database.js
+│   ├── repository.js
+│
+├── routes/
+│   └── pages.js
+│
+├── services/
+│   └── rebalanceService.js
+│
+├── views/
+│   ├── comparison.ejs
+│   ├── holdings.ejs
+│   ├── history.ejs
+│   ├── plan-edit.ejs
+│   ├── error.ejs
+│   └── partials/
+│
+├── public/
+│   └── styles.css
+```
+
+---
+
+## 📊 Core Features
+
+### 1. Portfolio Comparison (Main Screen)
+
+* Displays:
+
+  * Current %
+  * Target %
+  * Drift
+  * Action (BUY / SELL / REVIEW)
+  * Amount (₹)
+* Summary:
+
+  * Total BUY
+  * Total SELL
+  * Net cash required
+
+---
+
+### 2. Current Holdings
+
+* Shows all investments of Amit Sharma
+* Displays total portfolio value
+
+---
+
+### 3. Rebalancing History
+
+* Tracks saved recommendations
+* Shows:
+
+  * Date
+  * Portfolio value
+  * Buy/Sell summary
+  * Status
+
+---
+
+### 4. Edit Model Portfolio
+
+* Modify allocation percentages
+* Validation:
+
+  * Must sum to **100%**
+* Automatically recalculates recommendations
+
+---
+
+## 🔢 Calculation Logic
+
+### Step 1: Total Portfolio Value
+
+```text
+Total = sum of all current holdings (including non-model funds)
+```
+
+### Step 2: Current Allocation
+
+```text
+current % = (current_value / total_portfolio_value) × 100
+```
+
+### Step 3: Drift
+
+```text
+drift = target % - current %
+```
+
+### Step 4: Action
+
+* drift > 0 → BUY
+* drift < 0 → SELL
+* fund not in model → REVIEW
+
+### Step 5: Amount
+
+```text
+amount = |drift % × total_portfolio_value|
+```
+
+---
+
+## ⚠️ Edge Cases Handled
+
+* ✅ Fund in model but **no current investment (0 value)**
+* ✅ Fund in holdings but **not in model → REVIEW**
+* ✅ Uses **current portfolio value**, not invested amount
+* ✅ Validation: allocation must equal **100%**
+
+---
+
+## 💾 Database Usage
+
+### Read from:
+
+* `clients`
+* `model_funds`
+* `client_holdings`
+
+### Write to:
+
+* `rebalance_sessions`
+* `rebalance_items`
+
+### Save Flow:
+
+* 1 entry in `rebalance_sessions`
+* Multiple entries in `rebalance_items` (one per fund)
+
+---
+
+## 🖥️ Screens
+
+| Page          | Description                |
+| ------------- | -------------------------- |
+| `/comparison` | Main rebalancing dashboard |
+| `/holdings`   | Current investments        |
+| `/history`    | Past recommendations       |
+| `/plan/edit`  | Edit allocation            |
+
+---
+
+## ▶️ How to Run Locally
+
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/Ritik4259/Valuefy-assessment.git
+cd Valuefy-assessment
+```
+
+### 2. Install dependencies
 
 ```bash
 npm install
+```
+
+### 3. Run the app
+
+```bash
 npm start
 ```
 
-Open `http://localhost:3000`.
-
-## Free Deployment
-
-This project can be deployed for free as a demo app on platforms like Koyeb or Render.
-
-Important limitation:
-
-- The app uses a local SQLite file: `model_portfolio.db`
-- On free hosting, local disk is usually ephemeral
-- That means saved rebalance history or edited model allocations may be lost after restart, redeploy, or inactivity
-
-If this is for an interview/demo, that is usually acceptable. If you need permanent saved data, move to a paid persistent disk or switch to a hosted database.
-
-### Option 1: Render Free Web Service
-
-1. Push this project to GitHub
-2. Sign in to Render
-3. Create a new `Web Service`
-4. Connect the GitHub repository
-5. Set:
-   - Build Command: `npm install`
-   - Start Command: `npm start`
-6. Deploy
-
-Render will detect the Express app automatically. The app already reads `PORT` from the environment.
-
-### Option 2: Koyeb Free Web Service
-
-1. Push this project to GitHub
-2. Sign in to Koyeb
-3. Create a new web service from the GitHub repo
-4. Use either:
-   - Native Node.js build with start command `npm start`
-   - Or Docker deployment using the included `Dockerfile`
-5. Deploy
-
-### Health Check
-
-For platforms that support health checks, use:
+### 4. Open in browser
 
 ```text
-/health
+http://localhost:3000
 ```
 
-### Production Notes
+---
 
-- Keep `model_portfolio.db` committed if you want the seed data available on deploy
-- Avoid multiple app instances with SQLite
-- Free hosting is best for demo use, not long-term persistence
+## 🌐 Deployment
 
-## Architecture
+The app is deployed using **Render**.
 
-- `app.js`: Express bootstrap, shared template helpers, static assets, and route mounting
-- `db/database.js`: small promise wrapper around the `sqlite3` driver
-- `db/repository.js`: all raw SQL queries for reading clients/model funds/holdings and writing rebalance sessions/items
-- `services/rebalanceService.js`: comparison and summary calculations
-- `routes/pages.js`: server-rendered page routes and form submissions
-- `views/`: EJS templates for comparison, holdings, history, plan editing, and error handling
-- `public/styles.css`: plain CSS styling
+### Deployment Steps:
 
-## Calculation Logic
+* Create Web Service on Render
+* Connect GitHub repo
+* Build: `npm install`
+* Start: `npm start`
 
-- The app only reads Amit Sharma from `clients`
-- Total portfolio value is the sum of all Amit holdings, including off-model funds
-- For each model fund:
-  - `current_pct = current_value / total_portfolio_value * 100`
-  - `drift_pct = target_pct - current_pct`
-  - `BUY` when drift is positive, `SELL` when drift is negative, `HOLD` when drift is zero
-  - `amount = abs((drift_pct / 100) * total_portfolio_value)`, rounded to the nearest rupee
-- Holdings missing from `model_funds` are shown as `REVIEW` with `target_pct = null`, `amount = current_value`, and `is_model_fund = 0`
-- Summary values are based on the rounded buy and sell amounts
+---
 
-## Routes
+## ⚠️ Note on SQLite
 
-- `GET /comparison`: model-vs-current comparison table and summary
-- `POST /comparison/save`: saves a rebalance session and rebalance items with status `PENDING`
-- `GET /holdings`: Amit's current holdings and total portfolio value
-- `GET /history`: saved rebalance sessions ordered newest first
-- `GET /plan/edit`: editable model allocation form
-- `POST /plan/edit`: validates total allocation equals exactly 100, updates `model_funds`, then redirects back to recalculated comparison
+This project uses SQLite as required by the assessment.
 
-## SQL Queries Used
+For production systems:
 
-- `SELECT` Amit Sharma from `clients`
-- `SELECT` all rows from `model_funds`
-- `SELECT` Amit's rows from `client_holdings`
-- `SELECT` Amit's rows from `rebalance_sessions` ordered by newest first
-- `UPDATE model_funds SET allocation_pct = ? WHERE fund_id = ?`
-- `INSERT INTO rebalance_sessions (...) VALUES (...)`
-- `INSERT INTO rebalance_items (...) VALUES (...)`
+* SQLite is not ideal for scalability
+* Recommended upgrade → PostgreSQL / MySQL
 
-## Edge Cases Handled
+---
 
-- Zero total portfolio value safely returns `0.0%` without division errors
-- Model funds missing from current holdings are treated as current value `0`
-- Off-model holdings still count toward portfolio value and are shown as `REVIEW`
-- Allocation edit rejects invalid or negative values
-- Allocation edit rejects totals that do not equal exactly `100`
-- Save rebalancing uses a SQL transaction so the session and item inserts succeed or fail together
+## 🤖 Use of AI Tools
+
+AI tools were used for:
+
+* speeding up development
+* structuring code
+* improving efficiency
+
+However:
+
+* All logic was validated manually
+* Calculations were verified against expected outputs
+* Code structure and decisions were understood and controlled
+
+---
+
+## 🎯 Key Highlights
+
+* Clean separation of logic (routes, services, DB)
+* Accurate financial calculations
+* Proper handling of edge cases
+* Simple, explainable architecture
+* Fully functional end-to-end flow
+
+---
+
+## 📌 Future Improvements
+
+* User authentication
+* Multi-client support
+* Graph-based visualization
+* Export reports (PDF/CSV)
+* Migration to scalable DB
+
+---
+
+## 👨‍💻 Author
+
+**Ritik**
+B.Tech CSE (AI & ML)
+Lovely Professional University
+
+
+* shorten this for interview submission
+* or make a **one-page executive README (very impressive for recruiters)**
